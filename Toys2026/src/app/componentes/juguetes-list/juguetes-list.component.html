@@ -1,0 +1,55 @@
+@defer (when apiData){
+  <div class="container-fluid">
+    <div class="row">
+<!--      paginacion-->
+      <div class="col-12 col-md-6">
+        <ngb-pagination
+          [collectionSize]="apiData.juguetes.info.total"
+          [(page)] = "currentePage"
+          [pageSize] = "9"
+          (pageChange)="loadAllToys()"
+          [rotate]="true"
+          [ellipses]=" true"
+        ></ngb-pagination>
+      </div>
+    </div>
+    <div class="row">
+<!--      listado de tarjetas-->
+      @for (toy of juguetes; track toy._id){
+        <div class="col-4 my-1">
+          <div class="card shadow">
+            <img class="card-img-top"
+                 routerLink="/juguete/edit/{{toy._id}}"
+                 [src]="toy.imagen" [alt]="toy.nombre">
+            <div class="card-body">
+              <div routerLink="/juguete/edit/{{toy._id}}"
+                   class="card-title">
+                <h4>{{toy.nombre}}</h4>
+                <p>ID: {{toy._id}}</p>
+              </div>
+              <div class="card-subtitle">
+                <span>{{toy.categoria}}</span>
+              </div>
+              <div class="d-flex justify-content-between">
+                <p>Edad Minima: {{toy.edadMinima}}</p>
+              </div>
+            </div>
+            <div class="card-footer">
+              <h6 class="card-text"> Precio: {{toy.precio | currency: 'EUR'}}</h6>
+              <div class="justify-content-center">
+<!--                <fa-icon class="text-danger"-->
+<!--                         [icon]="fa"-->
+<!--                         (click)="deleteJuguetes()"></fa-icon>-->
+                <button class="btn btn-danger"
+                        (click)="deleteJuguetes(toy)">Eliminar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+} @placeholder (){
+  <h1>Loading</h1>
+}

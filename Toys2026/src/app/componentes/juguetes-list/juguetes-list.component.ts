@@ -1,16 +1,16 @@
 import {Component, inject} from '@angular/core';
 import {JuguetesService} from '../../service/juguetes.service';
 import {ApiResponseJuguetes, Juguete} from '../../common/juguetes';
-import {NgbPagination} from '@ng-bootstrap/ng-bootstrap';
 import {RouterLink} from '@angular/router';
 import {CurrencyPipe} from '@angular/common';
+import {NgbPagination} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-juguetes-list',
   imports: [
     NgbPagination,
     RouterLink,
-    CurrencyPipe
+    CurrencyPipe,
   ],
   templateUrl: './juguetes-list.component.html',
   styleUrl: './juguetes-list.component.css'
@@ -23,13 +23,13 @@ export class JuguetesListComponent {
   apiData!: ApiResponseJuguetes;
   juguetes: Juguete[] = [];
   currentePage: number = 1;
-  faTrashCan: any;
+
 
   constructor() {
     this.loadAllToys();
   }
 
-  private loadAllToys() {
+  protected loadAllToys() {
     this.jugueteService.getJuguetesPaged(this.currentePage).subscribe({
       next: data => {
         this.apiData = data;
@@ -41,5 +41,22 @@ export class JuguetesListComponent {
         console.log('Toys fetched successfully');
       }
     })
+  }
+
+  deleteJuguetes(juguete: Juguete) {
+    if (confirm('Desea Borrar el juguete: ' + juguete.nombre + '?')) {
+      this.jugueteService.deleteJuguete(juguete._id).subscribe(
+        {
+          next: data => {
+            console.log(data);
+            alert(data.message)
+          },
+          error: err => {
+            console.log(err);
+          }
+        }
+      )
+    }
+
   }
 }
