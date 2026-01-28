@@ -1,1 +1,48 @@
-<p>juguetes-edit works!</p>
+@defer (when !loading){
+  <div class="row">
+    <div class="col-md-6">
+<!--    formulario  -->
+      <form [formGroup]="formJuguetes" ]>
+        <div class="form-floating mb-3">
+          <input type="text"
+          formControlName="nombre"
+          class="form-control"
+          id="nombre"
+          placeholder="entre el nombre">
+          <label for="nombre">Nombre</label>
+        </div>
+      </form>
+
+    </div>
+    <div class="col-md-6">
+<!--aqui va a ir la tarjeta-->
+      <div class="card shadow">
+        <img class="card-img-top"
+             [src]="imagen.value" [alt]="nombre.value">
+        <div class="card-body">
+          <div class="card-title">
+            <h4>{{nombre.value}}</h4>
+            <p>ID: {{iid.value}}</p>
+          </div>
+          <div class="card-subtitle">
+            <span>{{categoria.value}}</span>
+          </div>
+          <div class="d-flex justify-content-between">
+            <p>Edad Minima: {{edadMinima.value}}</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <h6 class="card-text"> Precio: {{precio.value | currency: 'EUR'}}</h6>
+          <div class="justify-content-center">
+            <!--                <fa-icon class="text-danger"-->
+            <!--                         [icon]="fa"-->
+            <!--                         (click)="deleteJuguetes()"></fa-icon>-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+} @placeholder (){
+  <h1>Loading</h1>
+}
