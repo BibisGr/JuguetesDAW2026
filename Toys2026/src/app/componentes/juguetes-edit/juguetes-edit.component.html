@@ -26,6 +26,17 @@
                 La cantidad maxima de caracteres debe ser 50
               </div>
             }
+            @if (nombre.errors['forbidenName']) {
+              <div class="alert alert-danger">
+                no se pueden utilizar expresiones tales como:
+                xxx 0 XXX - 000
+              </div>
+            }
+            @if (nombre.errors['notOnlyWhiteSpaces']) {
+              <div class="alert alert-danger">
+                No puede contener espacios ni estar vacio
+              </div>
+            }
 
           }
         </div>

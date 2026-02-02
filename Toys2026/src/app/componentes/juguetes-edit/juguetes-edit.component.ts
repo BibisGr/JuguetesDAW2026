@@ -3,6 +3,7 @@ import {JuguetesService} from '../../service/juguetes.service';
 import {Router, RouterLink} from '@angular/router';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {CurrencyPipe} from '@angular/common';
+import {FormValidators} from '../../Validator/FormValidators';
 
 @Component({
   selector: 'app-juguetes-edit',
@@ -30,7 +31,9 @@ export class JuguetesEditComponent implements OnInit {
     _id: ['', [Validators.required]],
     nombre: ['', [Validators.required,
     Validators.maxLength(10),
-    Validators.minLength(1)]],
+    Validators.minLength(1),
+    FormValidators.forbidenNameValidator(/xxx|XXX/i ),
+    FormValidators.notOnlyWhiteSpaces]],
     imagen: ['', [Validators.required]],
     categoria: ['', [Validators.required]],
     edadMinima: [0, [Validators.required,
