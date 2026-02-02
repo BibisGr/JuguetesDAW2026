@@ -16,6 +16,16 @@
                 El nombre es obligatorio
               </div>
             }
+            @if (nombre.errors['minlength']) {
+              <div class="alert alert-danger">
+                La cantidad minima de caracteres debe ser 1
+              </div>
+            }
+            @if (nombre.errors['maxlength']) {
+              <div class="alert alert-danger">
+                La cantidad maxima de caracteres debe ser 50
+              </div>
+            }
 
           }
         </div>
@@ -62,6 +72,17 @@
                 La Edad minima es obligatoria
               </div>
             }
+            @if (edadMinima.errors['min']) {
+              <div class="alert alert-danger">
+                La Edad minima es 0
+              </div>
+            }
+            @if (edadMinima.errors['max']) {
+              <div class="alert alert-danger">
+                La Edad maxima es 125
+              </div>
+            }
+
           }
         </div>
         <div class="form-floating mb-3">

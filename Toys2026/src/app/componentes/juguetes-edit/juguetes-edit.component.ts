@@ -13,14 +13,14 @@ import {CurrencyPipe} from '@angular/common';
   templateUrl: './juguetes-edit.component.html',
   styleUrl: './juguetes-edit.component.css'
 })
-export class JuguetesEditComponent implements OnInit{
+export class JuguetesEditComponent implements OnInit {
   @Input('id') id!: string;
 
   private readonly jugueteService: JuguetesService =
     inject(JuguetesService);
   private readonly router: Router =
     inject(Router);
-  private readonly formBuilder:FormBuilder =
+  private readonly formBuilder: FormBuilder =
     inject(FormBuilder);
 
   editar: boolean = false
@@ -28,55 +28,63 @@ export class JuguetesEditComponent implements OnInit{
 
   formJuguetes: FormGroup = this.formBuilder.group({
     _id: ['', [Validators.required]],
-    nombre: ['',[Validators.required]],
-    imagen: ['',[Validators.required]],
-    categoria: ['',[Validators.required]],
-    edadMinima: [0, [Validators.required]],
+    nombre: ['', [Validators.required,
+    Validators.maxLength(10),
+    Validators.minLength(1)]],
+    imagen: ['', [Validators.required]],
+    categoria: ['', [Validators.required]],
+    edadMinima: [0, [Validators.required,
+    Validators.min(0),
+    Validators.max(125)]],
     precio: [0, [Validators.required]]
   })
 
-  get iid():any{
+  get iid(): any {
     return this.formJuguetes.get('_id')
   }
-  get nombre():any{
+
+  get nombre(): any {
     return this.formJuguetes.get('nombre')
   }
-  get imagen():any{
+
+  get imagen(): any {
     return this.formJuguetes.get('imagen')
   }
-  get categoria():any{
+
+  get categoria(): any {
     return this.formJuguetes.get('categoria')
   }
-  get edadMinima():any{
+
+  get edadMinima(): any {
     return this.formJuguetes.get('edadMinima')
   }
-  get precio():any{
+
+  get precio(): any {
     return this.formJuguetes.get('precio')
   }
 
   ngOnInit(): void {
-    if (this.id){
+    if (this.id) {
       this.loadJueguete();
       this.editar = true;
       this.loading = false
-    }
-    else {
+    } else {
       this.formJuguetes.reset()
       this.editar = false;
       this.loading = false;
     }
   }
 
-  protected loadJueguete(){
+  protected loadJueguete() {
     this.jugueteService.getOneJuguete(this.id).subscribe(
       {
-        next:data=>{
+        next: data => {
           this.formJuguetes.setValue(data)
         },
-        error:error=>{
-          console.log('Error cargando el juguete: '+error)
+        error: error => {
+          console.log('Error cargando el juguete: ' + error)
         },
-        complete:()=>{
+        complete: () => {
           console.log('Juguete cargado correctamente')
         }
       }
@@ -84,38 +92,38 @@ export class JuguetesEditComponent implements OnInit{
   }
 
   onSubmit() {
-    // if (this.formJuguetes.invalid){
-    //   this.formJuguetes.markAllAsTouched();
-    // }
-    if (this.editar){
-    //   actualizar el juguete que ya existe
-      this.jugueteService.updateJuguete(this.formJuguetes.getRawValue()).subscribe(
-        {
-          next:value=>{
-            alert(value.message);
-            console.log('updated -> list');
-            this.router.navigateByUrl('/juguete/list')
-          },
-          error:error=>{
-            console.log('Error actualizando el juguete: '+error)
+    if (this.formJuguetes.invalid) {
+      this.formJuguetes.markAllAsTouched();
+    } else {
+      if (this.editar) {
+        //   actualizar el juguete que ya existe
+        this.jugueteService.updateJuguete(this.formJuguetes.getRawValue()).subscribe(
+          {
+            next: value => {
+              // alert(value.message);
+              console.log('updated -> list');
+              this.router.navigateByUrl('/juguete/list')
+            },
+            error: error => {
+              console.log('Error actualizando el juguete: ' + error)
+            }
           }
-        }
-      )
-    }
-    else {
-      //agregar uno nuevo
-      this.jugueteService.addJuguete(this.formJuguetes.getRawValue()).subscribe(
-        {
-          next:data=>{
-            alert(data.message);
-            console.log('created -> list');
-            this.router.navigateByUrl('/juguete/list')
-          },
-          error:error=>{
-            console.log('Error creando el juguete: '+error)
+        )
+      } else {
+        //agregar uno nuevo
+        this.jugueteService.addJuguete(this.formJuguetes.getRawValue()).subscribe(
+          {
+            next: data => {
+              // alert(data.message);
+              console.log('created -> list');
+              this.router.navigateByUrl('/juguete/list')
+            },
+            error: error => {
+              console.log('Error creando el juguete: ' + error)
+            }
           }
-        }
-      )
+        )
+      }
     }
   }
 }

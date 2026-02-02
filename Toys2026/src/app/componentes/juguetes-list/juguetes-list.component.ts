@@ -49,7 +49,7 @@ export class JuguetesListComponent {
         {
           next: data => {
             console.log(data);
-            alert(data.message)
+            // alert(data.message)
           },
           error: err => {
             console.log(err);
