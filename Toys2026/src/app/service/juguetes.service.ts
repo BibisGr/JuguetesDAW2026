@@ -31,11 +31,12 @@ export class JuguetesService {
   }
   // agregar un juguete nuevo
   addJuguete(juguete: Juguete):Observable<any>{
-    return this.http.post(this.URLBase+'juguetes', juguete)
+    return this.http.post<any>(this.URLBase+'juguetes', juguete)
   }
   // actualizar un juguete existente
   updateJuguete(juguete: Juguete):Observable<any>{
-    return this.http.patch(this.URLBase+'juguetes', juguete._id)
+    return this.http.patch<any>(this.URLBase+'update/'+ juguete._id, juguete)
+    ///aqui era el problema
   }
   // eliminar un juguete por id
   deleteJuguete(id:string):Observable<any>{

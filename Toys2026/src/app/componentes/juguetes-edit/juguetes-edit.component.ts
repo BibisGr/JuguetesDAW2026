@@ -14,18 +14,6 @@ import {CurrencyPipe} from '@angular/common';
   styleUrl: './juguetes-edit.component.css'
 })
 export class JuguetesEditComponent implements OnInit{
-  ngOnInit(): void {
-      if (this.id){
-        this.loadJueguete();
-        this.editar = true;
-        this.loading = false
-      }
-      else {
-        this.formJuguetes.reset()
-        this.editar = false;
-        this.loading = false;
-      }
-  }
   @Input('id') id!: string;
 
   private readonly jugueteService: JuguetesService =
@@ -66,6 +54,19 @@ export class JuguetesEditComponent implements OnInit{
     return this.formJuguetes.get('precio')
   }
 
+  ngOnInit(): void {
+    if (this.id){
+      this.loadJueguete();
+      this.editar = true;
+      this.loading = false
+    }
+    else {
+      this.formJuguetes.reset()
+      this.editar = false;
+      this.loading = false;
+    }
+  }
+
   protected loadJueguete(){
     this.jugueteService.getOneJuguete(this.id).subscribe(
       {
@@ -80,5 +81,41 @@ export class JuguetesEditComponent implements OnInit{
         }
       }
     )
+  }
+
+  onSubmit() {
+    // if (this.formJuguetes.invalid){
+    //   this.formJuguetes.markAllAsTouched();
+    // }
+    if (this.editar){
+    //   actualizar el juguete que ya existe
+      this.jugueteService.updateJuguete(this.formJuguetes.getRawValue()).subscribe(
+        {
+          next:value=>{
+            alert(value.message);
+            console.log('updated -> list');
+            this.router.navigateByUrl('/juguete/list')
+          },
+          error:error=>{
+            console.log('Error actualizando el juguete: '+error)
+          }
+        }
+      )
+    }
+    else {
+      //agregar uno nuevo
+      this.jugueteService.addJuguete(this.formJuguetes.getRawValue()).subscribe(
+        {
+          next:data=>{
+            alert(data.message);
+            console.log('created -> list');
+            this.router.navigateByUrl('/juguete/list')
+          },
+          error:error=>{
+            console.log('Error creando el juguete: '+error)
+          }
+        }
+      )
+    }
   }
 }
